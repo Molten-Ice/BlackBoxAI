@@ -6,10 +6,13 @@
 
 from pathlib import Path
 import sys
-sys.path.append(Path.cwd().parent.as_posix())
+sys.path.append(Path.cwd().parent.as_posix()+'/BlackBoxAI')
 
 from data.dataset import Dataset
 from data.scraper import *
+
+from torch.utils.data import DataLoader
+#from torch.utils.data import DataLoader, SequentialSampler, RandomSampler
 
 def normalize(x, m, s): return (x-m)/s
 
@@ -20,7 +23,7 @@ def normalize_train_eval(x_train ,x_valid):
     x_valid = normalize(x_valid, train_mean, train_std)
     return x_train, x_valid
 
-class data():
+class Data():
     @classmethod
     def avaliable_urls(self):
         for key in urls:
@@ -33,3 +36,8 @@ class data():
         valid_ds = Dataset(x_valid_normalized, y_valid)
         c = y_train.max().item()+1
         return train_ds, valid_ds, c
+
+    @classmethod
+    def get_dls(self, train_ds, valid_ds, bs, **kwargs):
+        return (DataLoader(train_ds, batch_size=bs, shuffle=True, **kwargs),
+                DataLoader(valid_ds, batch_size=bs*2, **kwargs))
