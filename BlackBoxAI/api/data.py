@@ -10,6 +10,7 @@ sys.path.append(Path.cwd().parent.as_posix()+'/BlackBoxAI')
 
 from data.dataset import Dataset
 from data.scraper import *
+from data.bunch import DataBunch
 
 from torch.utils.data import DataLoader
 #from torch.utils.data import DataLoader, SequentialSampler, RandomSampler
@@ -28,6 +29,7 @@ class Data():
     def avaliable_urls(self):
         for key in urls:
             print(key, urls[key])
+
     @classmethod
     def load_data(self, *args):
         x_train,y_train,x_valid,y_valid = get_data(*args)
@@ -41,3 +43,7 @@ class Data():
     def get_dls(self, train_ds, valid_ds, bs, **kwargs):
         return (DataLoader(train_ds, batch_size=bs, shuffle=True, **kwargs),
                 DataLoader(valid_ds, batch_size=bs*2, **kwargs))
+
+    @classmethod
+    def to_bunch(self, train_ds, valid_ds, bs, c):
+        return DataBunch(*Data.get_dls(train_ds, valid_ds, bs), c)

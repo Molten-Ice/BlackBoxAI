@@ -4,6 +4,10 @@
 #################################################
 # file to edit: docs/callback_callback.ipynb
 
+import torch
+from torch import tensor
+import matplotlib.pyplot as plt
+
 import re
 
 _camel_re1 = re.compile('(.)([A-Z][a-z]+)')
