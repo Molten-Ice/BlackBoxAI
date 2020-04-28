@@ -7,9 +7,9 @@
 import sys
 from pathlib import Path
 sys.path.append(Path.cwd().parent.as_posix()+'/BlackBoxAI')
+
 from callback.callback import *
 from callback.trainEval import TrainEvalCallback
-import torch
 
 class Runner():
     def __init__(self, cbs=None, cb_funcs=None):
