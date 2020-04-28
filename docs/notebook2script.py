@@ -60,7 +60,7 @@ def notebook2scriptSingle(fname):
     else:
         folder_name = fname.stem.split("_")[0]
         fname_out = f'{fname.stem[len(folder_name)+1:]}.py'
-        
+
     main_dic = json.load(open(fname,'r',encoding="utf-8"))
     code_cells = [c for c in main_dic['cells'] if is_export(c)]
     module = f'''
@@ -74,11 +74,11 @@ def notebook2scriptSingle(fname):
     # remove trailing spaces
     module = re.sub(r' +$', '', module, flags=re.MULTILINE)
     if not no_prefix:
-        output_folder= Path.cwd().parent/folder_name
+        output_folder= Path.cwd().parent/'BlackBoxAI'/folder_name
         if not (output_folder).exists(): (output_folder).mkdir()
         output_path = output_folder/fname_out
     else:
-        output_path = Path.cwd().parent/fname_out
+        output_path = Path.cwd().parent/'BlackBoxAI'/fname_out
     if output_path.exists(): 
         print("Replacing old file")
         import os
@@ -86,6 +86,6 @@ def notebook2scriptSingle(fname):
     with io.open(output_path, "w", encoding="utf-8") as f:
         f.write(module[:-2])
     print(f"Converted {fname} to {output_path}")
-    
+
 if __name__ == '__main__': fire.Fire(notebook2script)
 
